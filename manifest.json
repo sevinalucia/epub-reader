@@ -1,0 +1,36 @@
+{
+  "version": "0.1.3",
+  "manifest_version": 2,
+  "name": "ePub Reader",
+  "offline_enabled": true,
+  "short_name": "epub-reader",
+  "permissions": ["storage", "contextMenus"],
+  "optional_permissions": ["http://*/*", "https://*/*"],
+  "homepage_url": "https://mybrowseraddon.com/epub-reader.html",
+  "description": "View ePub documents right in your browser in a stand-alone popup window.",
+  "background": {
+    "persistent": false,
+    "scripts": [
+      "lib/config.js", 
+      "lib/chrome.js",
+      "lib/runtime.js",
+      "lib/common.js"
+    ]
+  },
+  "browser_action": {
+    "default_title": "ePub Reader",
+    "default_icon": {
+      "16": "data/icons/16.png",
+      "32": "data/icons/32.png",
+      "48": "data/icons/48.png",
+      "64": "data/icons/64.png"
+    }
+  },
+  "icons": {
+    "16": "data/icons/16.png",
+    "32": "data/icons/32.png",
+    "48": "data/icons/48.png",
+    "64": "data/icons/64.png",
+    "128": "data/icons/128.png"
+  }
+}

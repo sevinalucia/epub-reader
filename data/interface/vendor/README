@@ -1,0 +1,11 @@
+This add-on uses the following open-source JavaScript libraries:
+
+JSZIP
+-------------------
+GitHub page: https://github.com/Stuk/jszip
+Download link: https://cdn.jsdelivr.net/npm/jszip@3.6.0/dist/jszip.js
+
+EPUB
+-------------------
+GitHub page: https://github.com/futurepress/epub.js
+Download link: https://cdn.jsdelivr.net/npm/epubjs@0.3.88/dist/epub.js

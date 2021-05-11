@@ -1,0 +1,227 @@
+.toolbar {
+	margin: 1px;
+	padding: 1px;
+	display: grid;
+	width: calc(100% - 6px);
+	height: calc(100% - 4px);
+	border: solid 1px rgba(0,0,0,0.05);
+}
+
+.toolbar[render] {
+	width: calc(100% - 16px);
+}
+
+.toolbar svg {
+	fill: #777;
+	pointer-events: none;
+	vertical-align: middle;
+}
+
+.toolbar[toggle="hide"] {
+	height: 0;
+	display: none;
+}
+
+.toolbar span {
+	pointer-events: none;
+}
+
+.toolbar .light, .toolbar .dark, .toolbar .sepia {
+	cursor: pointer;
+}
+
+.toolbar .light {
+	background-color: #ffffff !important;
+}
+
+.toolbar .dark {
+	color: #e4e4e4 !important;
+	background-color: #333333 !important;
+}
+
+.toolbar .sepia {
+	background-color: #f4ecd8 !important;
+}
+
+.toolbar .grid {
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-row-gap: 1px;
+	grid-column-gap: 1px;
+	width: calc(100% - 1px);
+	grid-template-columns: auto 35%;
+	grid-template-rows: 48px 48px 96px 48px;
+}
+
+.toolbar .grid > div {
+	display: grid;
+	grid-row-gap: 1px;
+	border: solid 1px rgba(0,0,0,0.05);
+}
+
+.toolbar .grid select {
+	border: 0;
+	margin: 0;
+	color: #666;
+	width: 100%;
+	height: 100%;
+	outline: none;
+	padding: 0 5px;
+	cursor: pointer;
+	font-size: 12px;
+	appearance: none;
+	font-family: monospace;
+	background: transparent;
+}
+
+.toolbar .grid select option {
+	font-size: 12px;
+	font-family: monospace;
+}
+
+.toolbar .grid .subgrid {
+	padding: 0;
+	display: grid;
+	grid-row-gap: 0;
+	grid-column-gap: 0;
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
+	grid-template-rows: 50% 50%;
+	border: solid 1px rgba(0,0,0,0.05);
+}
+
+.toolbar .grid .subgrid > div {
+	cursor: pointer;
+	transition: 300ms ease all;
+}
+
+.toolbar .grid .subgrid > div[class*="serif"],
+.toolbar .grid .subgrid > div[class*="increase"],
+.toolbar .grid .subgrid > div[class*="decrease"],
+.toolbar .grid .subgrid > div[class*="sans-serif"] {
+	margin: 1px;
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	border: solid 1px rgba(0,0,0,0.05);
+}
+
+.toolbar .grid .subgrid > div:hover {
+	background-color: rgba(0,0,0,0.1);
+}
+
+.toolbar .grid > div[one] {grid-template-columns: auto}
+.toolbar .grid > div[two] {grid-template-columns: 50% 50%}
+
+.toolbar .grid > div[three] {
+	height: 100%;
+	grid-template-columns: auto auto auto;
+}
+
+.toolbar .grid > div[four] {
+	padding: 1px;
+	width: calc(100% - 4px);
+	grid-template-columns: 25% 25% 25% 25%;
+}
+
+.toolbar .grid > div[last] {
+	padding: 1px;
+	grid-row-end: 5;
+	grid-row-start: 1;
+	position: relative;
+	grid-column-end: 2;
+	grid-column-start: 2;
+	width: calc(100% - 3px);
+	height: calc(100% - 2px);
+	border: solid 1px rgba(0,0,0,0.05);
+	grid-template-rows: 46px auto 48px;
+}
+
+.toolbar .grid > div > div {
+	border: 0;
+	padding: 0;
+	color: #777;
+	outline: none;
+	font-size: 12px;
+	overflow: hidden;
+	user-select: none;
+	line-height: 42px;
+	text-align: center;
+	text-overflow: ellipsis;
+	font-family: arial,sans-serif;
+	background-color: transparent;
+}
+
+.toolbar .grid > div[three] > div {
+	margin: 1px;
+	padding: 1px;
+	letter-spacing: 1px;
+	width: calc(100% - 6px);
+	height: calc(100% - 6px);
+	text-transform: uppercase;
+	font-size: 11px !important;
+	border: solid 1px rgba(0,0,0,0.05);
+}
+
+.toolbar .grid > div > div[empty] {
+	text-align: left;
+	text-indent: 5px;
+}
+
+.toolbar .grid > div[last] > div {
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
+	border: solid 1px rgba(0,0,0,0.05);
+}
+
+.toolbar .grid > div[last] .file svg {
+	top: 50%;
+	right: 50%;
+	position: absolute;
+}
+
+.toolbar .grid > div[last] .file input[type='file'] {
+	border: 0;
+	height: 100%;
+	margin: auto;
+	padding: 0 5px;
+	cursor: pointer;
+	font-size: 12px;
+	overflow: hidden;
+	line-height: unset;
+	white-space: nowrap;
+	width: calc(100% - 2px);
+	font-family: monospace;
+	vertical-align: middle;
+	box-sizing: border-box;
+	text-overflow: ellipsis;
+}
+
+.toolbar .grid div[one] input {
+	border: 0;
+	width: 100%;
+	height: 100%;
+	outline: none;
+	font-size: 12px;
+	text-indent: 5px;
+	overflow: hidden;
+	white-space: nowrap;
+	font-family: monospace;
+	text-overflow: ellipsis;
+	background-color: transparent;
+}
+
+.toolbar .grid input[type='url'] {
+	color: #007ae6;
+}
+
+@-moz-document url-prefix() {
+	.toolbar .grid select,
+	.toolbar .grid select option,
+	.toolbar .grid div[one] input,
+	.toolbar .grid > div[last] input[type='file'] {
+    font-size: 11px;
+    font-weight: normal;
+    font-family: monaco, "andale mono", "lucida console", "courier new", monospace;
+  }
+}

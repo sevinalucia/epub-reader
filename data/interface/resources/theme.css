@@ -1,0 +1,46 @@
+html[color="dark"] {background-color: #333 !important}
+html[color="light"] {background-color: #FFF !important}
+html[color="sepia"] {background-color: #f4ecd8 !important}
+
+html[color="dark"] .toolbar {background-color: #333 !important}
+html[color="light"] .toolbar {background-color: #FFF !important}
+html[color="sepia"] .toolbar {background-color: #f4ecd8 !important}
+
+html[color="dark"] .sidebar {background-color: #333 !important}
+html[color="light"] .sidebar {background-color: #FFF !important}
+html[color="sepia"] .sidebar {background-color: #f4ecd8 !important}
+
+html[color="dark"] #toggle {background-color: #333 !important}
+html[color="light"] #toggle {background-color: #FFF !important}
+html[color="sepia"] #toggle {background-color: #f4ecd8 !important}
+
+html[color="dark"] .toolbar .grid * {
+	fill: #e4e4e4 !important;
+	color: #e4e4e4 !important;
+}
+
+html[color="dark"] #toggle,
+html[color="dark"] #status,
+html[color="dark"] #loading,
+html[color="dark"] .footer,
+html[color="dark"] .toolbar,
+html[color="dark"] .content,
+html[color="dark"] .container,
+html[color="dark"] .footer > div,
+html[color="dark"] .toolbar .grid > div,
+html[color="dark"] .toolbar .grid .subgrid,
+html[color="dark"] .toolbar .grid > div[last] .file,
+html[color="dark"] .toolbar .grid > div[last] .select,
+html[color="dark"] .toolbar .grid > div[last] .sidebar,
+html[color="dark"] .toolbar .grid .subgrid > div[class] {
+	border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html[color="dark"] .footer > div input {
+	color: #ffffff;;
+}
+
+html[color="dark"] .toolbar .light, 
+html[color="dark"] .toolbar .sepia {
+	color: #333333 !important;
+}

@@ -1,0 +1,23 @@
+.sidebar[state="hide"] {
+	display: none;
+}
+
+.sidebar table {
+	border: 0;
+  padding: 0;
+	width: 100%;
+	height: 100%;
+  margin: auto;
+  border-spacing: 0;
+  table-layout: fixed;
+	background-color: transparent;
+}
+
+.sidebar table tr td {
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	user-select: none;
+	text-align: center;
+	background-color: transparent;
+}

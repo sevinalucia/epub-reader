@@ -1,0 +1,68 @@
+@media (max-width: 600px) {
+	.footer[render] {width: calc(100% - 14px)}
+	.toolbar[render] {width: calc(100% - 16px)}
+	.container[render] {width: calc(100% - 14px)}
+	.container[state="hide"] {
+    margin-top: 46px;
+		height: calc(100% - 48px);
+	}
+	.content[state="hide"] {
+		grid-template-rows: 1fr 74px;
+	}
+	.sidebar {
+		top: unset;
+    right: 0px;
+    bottom: 0px;
+    left: unset;
+    position: fixed;
+    z-index: 2147483647;
+    height: 48px !important;
+    background-color: #ffffff;
+    border: solid 1px rgba(0,0,0,0.05);
+    width: calc(100% - 2px) !important;
+	}
+	.toolbar .grid > div[last] {
+		grid-template-rows: auto 48px;
+	}
+	.toolbar .grid > div[last] .file svg {
+		top: 40%;
+	}
+	.footer {
+		grid-template-rows: 48px 70px;
+	}
+	.footer[state='hide'] {
+		grid-template-rows: 70px;
+	}
+	.metrics {
+		height: calc(100% - 4px);
+		grid-template-columns: 1fr;
+		grid-template-rows: 32px 32px;
+	}
+	#loading {
+		text-align: left;
+	}
+	#toggle[state="hide"] {
+		transform: unset;
+		border-radius: 0;
+    top: 2px !important;
+    left: 2px !important;
+    font-family: monospace;
+    width: calc(100% - 6px);
+		text-indent: calc(100% - 48px);
+		background-color: transparent !important;
+	}
+	#toggle[state="hide"][method="scrolled-continuous"] {
+		text-indent: unset;
+	}
+	#status, #loading {
+		height: calc(100% - 3px);
+	}
+}
+
+@-moz-document url-prefix() {
+  #toggle[state="hide"] {
+    font-size: 11px;
+    font-weight: normal;
+    font-family: monaco, "andale mono", "lucida console", "courier new", monospace;
+  }
+}
