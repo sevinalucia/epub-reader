@@ -15,7 +15,6 @@
 
 .footer[state='hide'] {
 	grid-template-rows: 38px;
-	background-color: rgba(0,0,0,0.01);
 }
 
 .footer > div {
