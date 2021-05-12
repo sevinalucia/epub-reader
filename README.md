@@ -9,7 +9,7 @@ Note: this add-on uses an open-source JavaScript library called "epub.js" in ord
 You can install this app as a PWA on your mobile device, moreover, it is available as a browser extension as-well-as a web application:
 
 Chrome: https://chrome.google.com/webstore/detail/epub-reader/dgkibcakfnhcnijakeobjifghganmojn  
-Edge:   
+Edge: https://microsoftedge.microsoft.com/addons/detail/hffegfbgabklkfccdidnpgbamnficein  
 Firefox: https://addons.mozilla.org/en-US/firefox/addon/epub-reader/  
 Opera: https://addons.opera.com/en/extensions/details/epub-reader/  
 Webapp & PWA: https://webbrowsertools.com/epub-reader/  
