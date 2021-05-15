@@ -19,6 +19,7 @@ html[color="dark"] .toolbar .grid * {
 	color: #e4e4e4 !important;
 }
 
+html[color="dark"] #ebook,
 html[color="dark"] #toggle,
 html[color="dark"] #status,
 html[color="dark"] #loading,
@@ -26,6 +27,8 @@ html[color="dark"] .footer,
 html[color="dark"] .toolbar,
 html[color="dark"] .content,
 html[color="dark"] .container,
+html[color="dark"] #ebook > div,
+html[color="dark"] #ebook[empty],
 html[color="dark"] .footer > div,
 html[color="dark"] .sidebar table tr td,
 html[color="dark"] .toolbar .grid > div,
@@ -34,11 +37,12 @@ html[color="dark"] .toolbar .grid > div[last] .file,
 html[color="dark"] .toolbar .grid > div[last] .select,
 html[color="dark"] .toolbar .grid > div[last] .sidebar,
 html[color="dark"] .toolbar .grid .subgrid > div[class] {
-	border-color: rgba(255, 255, 255, 0.1) !important;
+	border-color: rgba(255,255,255,0.1) !important;
 }
 
-html[color="dark"] .footer > div input {
-	color: #ffffff;;
+html[color="dark"] .footer > div input,
+html[color="dark"] #ebook[empty] {
+	color: #ffffff;
 }
 
 html[color="dark"] .toolbar .light, 

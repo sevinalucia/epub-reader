@@ -91,10 +91,10 @@ config.render = function (result) {
                 var render = container.getAttribute("render") !== null;
                 var mobileview = parseInt(window.getComputedStyle(document.documentElement).width) < 600;
                 /*  */
-                height.r = "calc(100vh" + " - " + height.t + " - " + height.f + " - " + (state === "hide" ? (mobileview ? "60px" : "16px") : (render ? "20px" : "9px")) + ')';
+                height.r = "calc(100vh" + " - " + height.t + " - " + height.f + " - " + (state === "hide" ? (mobileview ? "64px" : "19px") : (render ? "24px" : "9px")) + ')';
                 /*  */
-                config.renderer.firstChild.style.margin = "0";
                 config.renderer.firstChild.style.width = "100%";
+                config.renderer.firstChild.style.margin = "auto";
                 config.renderer.firstChild.style.height = height.r;
                 config.renderer.firstChild.style.maxWidth = "100%";
                 config.renderer.firstChild.style.maxHeight = height.r;

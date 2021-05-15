@@ -1,10 +1,7 @@
 @media (max-width: 600px) {
-	.footer[render] {width: calc(100% - 14px)}
-	.toolbar[render] {width: calc(100% - 16px)}
-	.container[render] {width: calc(100% - 14px)}
 	.container[state="hide"] {
     margin-top: 46px;
-		height: calc(100% - 48px);
+		height: calc(100% - 47px);
 	}
 	.content[state="hide"] {
 		grid-template-rows: 1fr 74px;
@@ -44,15 +41,12 @@
 	#toggle[state="hide"] {
 		transform: unset;
 		border-radius: 0;
+		text-indent: unset;
     top: 2px !important;
     left: 2px !important;
     font-family: monospace;
     width: calc(100% - 6px);
-		text-indent: calc(100% - 48px);
 		background-color: transparent !important;
-	}
-	#toggle[state="hide"][method="scrolled-continuous"] {
-		text-indent: unset;
 	}
 	#status, #loading {
 		height: calc(100% - 3px);

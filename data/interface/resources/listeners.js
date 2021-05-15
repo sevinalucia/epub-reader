@@ -7,7 +7,6 @@ config.app.listeners = {
     var toggle = document.getElementById("toggle");
     var methods = document.getElementById("methods");
     /*  */
-    var sidebar = document.querySelector(".sidebar");
     var slider = document.querySelector("#slider input");
     /*  */
     var print = document.querySelector(".sidebar table .print");
@@ -89,17 +88,21 @@ config.app.listeners = {
     /*  */
     url.addEventListener("change", function (e) {
       if (e.target.value) {
-        if (config.context.extension) {
-          var option = {"permissions": ["tabs"], "origins": [e.target.value]};
-          chrome.permissions.request(option, function (allow) {
-            if (allow) config.fetch(e.target.value);
+        var context = document.documentElement.getAttribute("context");
+        if (context !== "webapp") {
+          chrome.permissions.request({"origins": [e.target.value]}, function (allow) {
+            if (allow) {
+              config.fetch(e.target.value);
+            }
           });
         } else {
           try {
             config.fetch(e.target.value);
           } catch (e) {}
         }
-      } else config.fetch('');
+      } else {
+        config.fetch('');
+      }
     }, false);
     /*  */
     fileio.addEventListener("change", function (e) {

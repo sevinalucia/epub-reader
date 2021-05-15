@@ -27,40 +27,51 @@ div[method="hypothes"], div[method="scrolled"] {
 .container {
 	padding: 0;
 	margin: 1px;
+  position: relative;
 	width: calc(100% - 4px);
 	height: calc(100% - 2px);
+  max-width: calc(100vw - 6px);
 	background-color: transparent;
 	border: solid 1px rgba(0,0,0,0.05);
-}
-
-.container[render] {
-	width: calc(100% - 14px);
 }
 
 .container[state="hide"] {
 	height: calc(100% - 2px);
 }
 
-.container > div {
+#ebook {
 	padding: 0;
 	margin: 1px;
 	user-select: none;
-	width: calc(100% - 6px);
+	width: calc(100% - 4px);
 	height: calc(100% - 4px);
 	border: solid 1px rgba(0,0,0,0.05);
 }
 
-.container div[empty] {
+#ebook > div {
+	margin-top: 2px !important;
+	border: solid 1px rgba(0,0,0,0.05);
+	max-width: calc(100vw - 16px) !important;
+}
+
+#ebook[empty] {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 	color: #777;
 	margin: auto;
 	height: 52px;
-	margin-top: 15%;
+	display: flex;
 	padding: 10px 0;
 	font-size: 12px;
 	font-weight: 100;
 	max-width: 500px;
 	line-height: 18px;
 	text-align: center;
+  position: absolute;
+	align-items: center;
+	justify-content: center;
 	font-family: arial,sans-serif;
 }
 
@@ -108,8 +119,8 @@ div[method="hypothes"], div[method="scrolled"] {
 }
 
 #toggle {
-	top: 260px;
-	right: 6px;
+	top: 265px;
+	right: 16px;
 	width: 42px;
 	height: 42px;
 	color: #d6d6d6;
@@ -135,17 +146,17 @@ div[method="hypothes"], div[method="scrolled"] {
 }
 
 #toggle[state="hide"] {
-	top: 6px;
+	top: 14px;
 }
 
 #toggle[method="scrolled-continuous"][state="show"] {
-	top: 260px;
-	right: 32px;
+	top: 265px;
+	right: 34px;
 }
 
 #toggle[method="scrolled-continuous"][state="hide"] {
 	top: 14px;
-	right: 32px;
+	right: 34px;
 }
 
 #info[chapters] {
