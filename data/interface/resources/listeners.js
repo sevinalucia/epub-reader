@@ -88,18 +88,9 @@ config.app.listeners = {
     /*  */
     url.addEventListener("change", function (e) {
       if (e.target.value) {
-        var context = document.documentElement.getAttribute("context");
-        if (context !== "webapp") {
-          chrome.permissions.request({"origins": [e.target.value]}, function (allow) {
-            if (allow) {
-              config.fetch(e.target.value);
-            }
-          });
-        } else {
-          try {
-            config.fetch(e.target.value);
-          } catch (e) {}
-        }
+        try {
+          config.fetch(e.target.value);
+        } catch (e) {}
       } else {
         config.fetch('');
       }

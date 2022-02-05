@@ -14,7 +14,7 @@
 }
 
 .footer > div {
-	color: #777;
+	color: #555;
 	background-color: transparent;
 }
 
@@ -51,18 +51,19 @@
 }
 
 #status, #loading {
-	margin: 1px;
-	padding: 0 5px;
-	font-size: 11px;
-	user-select: none;
-	line-height: 34px;
-	white-space: nowrap;
-	font-family: monospace;
-	text-overflow: ellipsis;
-	height: calc(100% - 8px);
-	width: calc(100% - 14px);
-	background-color: transparent;
-	border: solid 1px rgba(0,0,0,0.05);
+  margin: 1px;
+  padding: 0 10px;
+  font-size: 11px;
+  user-select: none;
+  line-height: 32px;
+  white-space: nowrap;
+  font-family: monospace;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  width: calc(100% - 2px);
+  height: calc(100% - 4px);
+  background-color: transparent;
+  border: solid 1px rgba(0,0,0,0.05);
 }
 
 #loading {

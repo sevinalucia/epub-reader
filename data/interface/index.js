@@ -1,28 +1,61 @@
-var background = (function () {
-  var tmp = {};
-  var context = document.documentElement.getAttribute("context");
-  if (context === "webapp") {
-    return {
-      "send": function () {},
-      "receive": function (callback) {}
+var background = {
+  "port": null,
+  "message": {},
+  "receive": function (id, callback) {
+    if (id) {
+      background.message[id] = callback;
     }
-  } else {
-    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-      for (var id in tmp) {
-        if (tmp[id] && (typeof tmp[id] === "function")) {
-          if (request.path === "background-to-interface") {
-            if (request.method === id) tmp[id](request.data);
+  },
+  "connect": function (port) {
+    chrome.runtime.onMessage.addListener(background.listener); 
+    /*  */
+    if (port) {
+      background.port = port;
+      background.port.onMessage.addListener(background.listener);
+      background.port.onDisconnect.addListener(function () {
+        background.port = null;
+      });
+    }
+  },
+  "send": function (id, data) {
+    if (id) {
+      if (context !== "webapp") {
+        chrome.runtime.sendMessage({
+          "method": id,
+          "data": data,
+          "path": "interface-to-background"
+        }); 
+      }
+    }
+  },
+  "post": function (id, data) {
+    if (id) {
+      if (background.port) {
+        background.port.postMessage({
+          "method": id,
+          "data": data,
+          "port": background.port.name,
+          "path": "interface-to-background"
+        });
+      }
+    }
+  },
+  "listener": function (e) {
+    if (e) {
+      for (var id in background.message) {
+        if (background.message[id]) {
+          if ((typeof background.message[id]) === "function") {
+            if (e.path === "background-to-interface") {
+              if (e.method === id) {
+                background.message[id](e.data);
+              }
+            }
           }
         }
       }
-    });
-    /*  */
-    return {
-      "receive": function (id, callback) {tmp[id] = callback},
-      "send": function (id, data) {chrome.runtime.sendMessage({"path": "interface-to-background", "method": id, "data": data})}
     }
   }
-})();
+};
 
 var config = {
   "url": '',
@@ -58,43 +91,64 @@ var config = {
   "resize": {
     "timeout": null,
     "method": function () {
-      var context = document.documentElement.getAttribute("context");
-      if (context === "win") {
+      if (config.port.name === "win") {
         if (config.resize.timeout) window.clearTimeout(config.resize.timeout);
-        config.resize.timeout = window.setTimeout(function () {
-          config.storage.write("interface.size", {
-            "width": window.innerWidth || window.outerWidth,
-            "height": window.innerHeight || window.outerHeight
-          });
+        config.resize.timeout = window.setTimeout(async function () {
+          var current = await chrome.windows.getCurrent();
           /*  */
-          config.app.start();
-        }, 300);
+          config.storage.write("interface.size", {
+            "top": current.top,
+            "left": current.left,
+            "width": current.width,
+            "height": current.height
+          });
+        }, 1000);
       }
     }
   },
-  "fetch": function (url) {
-    if (url !== undefined) {
-      config.url = url;
-      config.reader.url = config.url;
+  "style": {
+    "update": function (resize) {
+      document.documentElement.setAttribute("color", config.reader.theme.color);
+      /*  */
+      if (config.rendition) {
+        var width = config.reader.container.width;
+        /*  */
+        config.rendition.themes.font(config.reader.font.family);
+        config.rendition.themes.select(config.reader.theme.color);
+        config.rendition.themes.fontSize(config.reader.font.size + '%');
+        config.rendition.themes.override("line-height", config.reader.container.line.height + "em", true);
+        config.loading.textContent = "Font: " + config.reader.font.family + ' ' + config.reader.font.size + '%' + ", width: " + width + '%' + ", line-height: " + config.reader.container.line.height + "em";
+        /*  */
+        if (resize) {
+          try {
+            config.relocated = resize;
+            config.rendition.resize((width + "vw"), "100vh");
+          } catch (e) {}
+        }
+      }
     }
-    /*  */
-    if (config.url) {
-      config.action.empty();
-      if (config.xhr) config.xhr.abort();
-      /*  */
-      config.xhr = new XMLHttpRequest();
-      config.xhr.open("GET", config.url, true);
-      config.xhr.responseType = "arraybuffer";
-      config.info.textContent = "Fetching document 0% please wait...";
-      config.renderer.textContent = "Loading document, please wait...";
-      /*  */
-      config.xhr.onload = function () {config.render(this.response)};
-      config.xhr.onerror = function () {config.info.textContent = "An error has occurred! please try again."};
-      config.xhr.onprogress = function (e) {config.info.textContent = "Fetching document " + Math.floor((e.loaded / e.total) * 100) + "% please wait..."};
-      /*  */
-      config.xhr.send();
-    } else {
-      config.render('');
+  },
+  "handle": {
+    "settings": {
+      "click": function (e) {
+        var iframe = config.renderer.querySelector("iframe");
+        /*  */
+        switch (e.target.className) {
+          case "serif": config.reader.font.family = "serif"; break;
+          case "print": if (iframe) iframe.contentWindow.print(); break;
+          case "sans-serif": config.reader.font.family = "sans-serif"; break;
+          case "decrease-size": config.reader.font.size = config.reader.font.size > 50 ? config.reader.font.size - 1 : 50; break;
+          case "increase-size": config.reader.font.size = config.reader.font.size < 300 ? config.reader.font.size + 1 : 300; break;
+          case "decrease-width": config.reader.container.width = config.reader.container.width > 30 ? config.reader.container.width - 1 : 30; break;
+          case "increase-width": config.reader.container.width = config.reader.container.width < 100 ? config.reader.container.width + 1 : 100; break;
+          case "decrease-height": config.reader.container.line.height = config.reader.container.line.height > 1 ? config.reader.container.line.height - 0.05 : 1; break;
+          case "increase-height": config.reader.container.line.height = config.reader.container.line.height < 10 ? config.reader.container.line.height + 0.05 : 10; break;
+          default: break;
+        }
+        /*  */
+        config.reader.container.line.height = Number(config.reader.container.line.height.toFixed(2));
+        config.style.update(true);
+      }
     }
   },
   "storage": {
@@ -122,30 +176,62 @@ var config = {
       }
     }
   },
-  "handle": {
-    "settings": {
-      "click": function (e) {
-        var iframe = config.renderer.querySelector("iframe");
-        switch (e.target.className) {
-          case "serif": config.reader.font.family = "serif"; break;
-          case "print": if (iframe) iframe.contentWindow.print(); break;
-          case "sans-serif": config.reader.font.family = "sans-serif"; break;
-          case "decrease-size": config.reader.font.size = config.reader.font.size > 50 ? config.reader.font.size - 1 : 50; break;
-          case "increase-size": config.reader.font.size = config.reader.font.size < 300 ? config.reader.font.size + 1 : 300; break;
-          case "decrease-width": config.reader.container.width = config.reader.container.width > 30 ? config.reader.container.width - 1 : 30; break;
-          case "increase-width": config.reader.container.width = config.reader.container.width < 100 ? config.reader.container.width + 1 : 100; break;
-          case "decrease-height": config.reader.container.line.height = config.reader.container.line.height > 1 ? config.reader.container.line.height - 0.05 : 1; break;
-          case "increase-height": config.reader.container.line.height = config.reader.container.line.height < 10 ? config.reader.container.line.height + 0.05 : 10; break;
-          default: break;
+  "port": {
+    "name": '',
+    "connect": function () {
+      config.port.name = "webapp";
+      var context = document.documentElement.getAttribute("context");
+      /*  */
+      if (chrome.runtime) {
+        if (chrome.runtime.connect) {
+          if (context !== config.port.name) {
+            if (document.location.search === "?tab") config.port.name = "tab";
+            if (document.location.search === "?win") config.port.name = "win";
+            if (document.location.search === "?popup") config.port.name = "popup";
+            /*  */
+            if (config.port.name === "popup") {
+              document.body.style.width = "760px";
+              document.body.style.height = "550px";
+            }
+            /*  */
+            background.connect(chrome.runtime.connect({"name": config.port.name}));
+          }
         }
-        /*  */
-        config.reader.container.line.height = Number(config.reader.container.line.height.toFixed(2));
-        config.style.update(true);
       }
+      /*  */
+      document.documentElement.setAttribute("context", config.port.name);
+    }
+  },
+  "fetch": function (url) {
+    if (url !== undefined) {
+      config.url = url;
+      config.reader.url = config.url;
+    }
+    /*  */
+    if (config.url) {
+      config.action.empty();
+      if (config.xhr) config.xhr.abort();
+      /*  */
+      config.xhr = new XMLHttpRequest();
+      config.xhr.open("GET", config.url, true);
+      config.xhr.responseType = "arraybuffer";
+      config.info.textContent = "Fetching document 0% please wait...";
+      config.renderer.textContent = "Loading document, please wait...";
+      /*  */
+      config.xhr.onload = function () {config.render(this.response)};
+      config.xhr.onerror = function () {config.info.textContent = "An error has occurred! please try again."};
+      config.xhr.onprogress = function (e) {
+        var percent = e.total ? Math.floor((e.loaded / e.total) * 100) : '?';
+        config.info.textContent = "Fetching document " + percent + "% please wait...";
+      };
+      /*  */
+      config.xhr.send();
+    } else {
+      config.render('');
     }
   },
   "app": {
-    "start": function (e) {
+    "start": function () {
       if (config.reader.url && config.reader.url !== config.url) config.result = '';
       /*  */
       config.relocated = false;
@@ -176,55 +262,6 @@ var config = {
       config[config.result ? "render" : "fetch"]();
     }
   },
-  "style": {
-    "update": function (resize) {
-      var width = config.reader.container.width;
-      var container = document.querySelector(".container");
-      var height = window.getComputedStyle(container).height;
-      document.documentElement.setAttribute("color", config.reader.theme.color);
-      /*  */
-      if (config.rendition) {
-        config.rendition.themes.font(config.reader.font.family);
-        config.rendition.themes.select(config.reader.theme.color);
-        config.rendition.themes.fontSize(config.reader.font.size + '%');
-        config.rendition.themes.override("line-height", config.reader.container.line.height + "em", true);
-        config.loading.textContent = "Font: " + config.reader.font.family + ' ' + config.reader.font.size + '%' + ", width: " + width + '%' + ", line-height: " + config.reader.container.line.height + "em";
-        /*  */
-        if (resize) {
-          try {
-            config.relocated = resize;
-            config.rendition.resize((width + "vw"), "100vh");
-          } catch (e) {}
-        }
-      }
-    }
-  },
-  "port": {
-    "name": '',
-    "connect": function () {
-      config.port.name = "webapp";
-      var context = document.documentElement.getAttribute("context");
-      /*  */
-      if (chrome.runtime) {
-        if (chrome.runtime.connect) {
-          if (context !== config.port.name) {
-            if (document.location.search === "?tab") config.port.name = "tab";
-            if (document.location.search === "?win") config.port.name = "win";
-            if (document.location.search === "?popup") config.port.name = "popup";
-            /*  */
-            if (config.port.name === "popup") {
-              document.body.style.width = "760px";
-              document.body.style.height = "550px";
-            }
-            /*  */
-            chrome.runtime.connect({"name": config.port.name});
-          }
-        }
-      }
-      /*  */
-      document.documentElement.setAttribute("context", config.port.name);
-    }
-  },
   "action": {
     "slide": function (e) {
       if (config.book) {
@@ -240,7 +277,8 @@ var config = {
           var rtl = config.book.package.metadata.direction === "rtl";
           document.getElementById(rtl ? "next" : "prev").style.opacity = 1;
           rtl ? await config.rendition.next() : await config.rendition.prev();
-          e.preventDefault();
+          /*  */
+          if (e) e.preventDefault();
         }
       }
     },
@@ -250,7 +288,8 @@ var config = {
           var rtl = config.book.package.metadata.direction === "rtl";
           document.getElementById(rtl ? "prev" : "next").style.opacity = 1;
           rtl ? await config.rendition.prev() : await config.rendition.next();
-          e.preventDefault();
+          /*  */
+          if (e) e.preventDefault();
         }
       }
     },
@@ -293,10 +332,10 @@ var config = {
         get height () {return config.storage.read("line-height") !== undefined ? config.storage.read("line-height") : 1.2}
       }
     },
-    set url (val) {config.storage.write("url", val)},
+    set url (val) {config.storage.write("bookurl", val)},
     set toggle (val) {config.storage.write("toggle", val)},
     set method (val) {config.storage.write("method", val)},
-    get url () {return config.storage.read("url") !== undefined ? config.storage.read("url") : ''},
+    get url () {return config.storage.read("bookurl") !== undefined ? config.storage.read("bookurl") : ''},
     get toggle () {return config.storage.read("toggle") !== undefined ? config.storage.read("toggle") : "show"},
     get method () {return config.storage.read("method") !== undefined ? config.storage.read("method") : "scrolled-continuous"},
     "stored": {
@@ -324,16 +363,12 @@ var config = {
   }
 };
 
-background.receive("url", function (e) {
-  chrome.permissions.request({"origins": [e.url]}, function (allow) {
-    if (allow) {
-      config.reader.url = e.url;
-      config.app.start();
-    }
-  });
-});
 
 config.port.connect();
+
+background.receive("reload", function () {
+  document.location.reload();
+});
 
 window.addEventListener("load", config.load, false);
 document.addEventListener("keyup", config.keyup, false);

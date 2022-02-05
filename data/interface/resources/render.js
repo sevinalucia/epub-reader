@@ -91,7 +91,7 @@ config.render = function (result) {
                 var render = container.getAttribute("render") !== null;
                 var mobileview = parseInt(window.getComputedStyle(document.documentElement).width) < 600;
                 /*  */
-                height.r = "calc(100vh" + " - " + height.t + " - " + height.f + " - " + (state === "hide" ? (mobileview ? "64px" : "19px") : (render ? "24px" : "9px")) + ')';
+                height.r = "calc(100vh" + " - " + height.t + " - " + height.f + " - " + (state === "hide" ? (mobileview ? "64px" : "19px") : (render ? "23px" : "9px")) + ')';
                 /*  */
                 config.renderer.firstChild.style.width = "100%";
                 config.renderer.firstChild.style.margin = "auto";

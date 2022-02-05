@@ -49,9 +49,9 @@ div[method="hypothes"], div[method="scrolled"] {
 }
 
 #ebook > div {
-	margin-top: 2px !important;
+	margin-top: 1px !important;
 	border: solid 1px rgba(0,0,0,0.05);
-	max-width: calc(100vw - 16px) !important;
+	max-width: calc(100vw - 14px) !important;
 }
 
 #ebook[empty] {
@@ -59,20 +59,20 @@ div[method="hypothes"], div[method="scrolled"] {
   left: 0;
   right: 0;
   bottom: 0;
-	color: #777;
-	margin: auto;
-	height: 52px;
-	display: flex;
-	padding: 10px 0;
-	font-size: 12px;
-	font-weight: 100;
-	max-width: 500px;
-	line-height: 18px;
-	text-align: center;
+  color: #555;
+  margin: auto;
+  height: 52px;
+  display: flex;
+  padding: 10px 0;
+  font-size: 12px;
+  font-weight: 100;
+  max-width: 600px;
+  line-height: 18px;
+  text-align: center;
   position: absolute;
-	align-items: center;
-	justify-content: center;
-	font-family: arial,sans-serif;
+  align-items: center;
+  font-family: monospace;
+  justify-content: center;
 }
 
 .container[state='hide'] div[empty] {
@@ -82,20 +82,20 @@ div[method="hypothes"], div[method="scrolled"] {
 #prev, #next {
 	bottom: 0;
 	color: #666;
-	width: 36px;
+	width: 72px;
 	height: 100%;
 	opacity: 0.1;
 	display: flex;
 	position: fixed;
-	min-width: 36px;
-	max-width: 36px;
+	min-width: 72px;
+	max-width: 72px;
 	cursor: pointer;
 	font-size: 48px;
 	background: grey;
 	font-weight: bold;
 	user-select: none;
 	text-align: center;
-	z-index: 2147483646;
+	z-index: 2147483645;
 	align-items: center;
 	justify-content: center;
 	transition: 300ms ease all;
@@ -150,7 +150,7 @@ div[method="hypothes"], div[method="scrolled"] {
 }
 
 #toggle[method="scrolled-continuous"][state="show"] {
-	top: 265px;
+	top: 264px;
 	right: 34px;
 }
 
