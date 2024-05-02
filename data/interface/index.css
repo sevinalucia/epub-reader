@@ -55,24 +55,28 @@ div[method="hypothes"], div[method="scrolled"] {
 }
 
 #ebook[empty] {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  color: #555;
-  margin: auto;
-  height: 52px;
-  display: flex;
-  padding: 10px 0;
-  font-size: 12px;
-  font-weight: 100;
-  max-width: 600px;
-  line-height: 18px;
-  text-align: center;
-  position: absolute;
-  align-items: center;
-  font-family: monospace;
-  justify-content: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	color: #333;
+	margin: auto;
+	height: 88px;
+	display: flex;
+	padding: 10px 0;
+	font-size: 13px;
+	font-weight: 100;
+	max-width: 650px;
+	line-height: 18px;
+	padding-left: 78px;
+	text-align: center;
+	position: absolute;
+	align-items: center;
+	font-family: monospace;
+	box-sizing: border-box;
+	justify-content: center;
+	background: url('../icons/128.png') no-repeat 10px center;
+	background-size: 64px;
 }
 
 .container[state='hide'] div[empty] {
@@ -81,7 +85,7 @@ div[method="hypothes"], div[method="scrolled"] {
 
 #prev, #next {
 	bottom: 0;
-	color: #666;
+	color: #333;
 	width: 72px;
 	height: 100%;
 	opacity: 0.1;
@@ -125,10 +129,10 @@ div[method="hypothes"], div[method="scrolled"] {
 	height: 42px;
 	color: #d6d6d6;
 	cursor: pointer;
-	font-size: 16px;
+	font-size: 22px;
 	position: fixed;
 	user-select: none;
-	line-height: 42px;
+	line-height: 38px;
 	text-align: center;
 	border-radius: 50%;
 	z-index: 2147483647;
@@ -142,7 +146,7 @@ div[method="hypothes"], div[method="scrolled"] {
 }
 
 #toggle[state="show"] {
-	color: #777;
+	color: #555;
 }
 
 #toggle[state="hide"] {
@@ -157,6 +161,7 @@ div[method="hypothes"], div[method="scrolled"] {
 #toggle[method="scrolled-continuous"][state="hide"] {
 	top: 14px;
 	right: 34px;
+	line-height: 42px;
 }
 
 #info[chapters] {
@@ -170,7 +175,7 @@ html[context="webapp"] .donation {
 
 @-moz-document url-prefix() {
   #toggle {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: normal;
     font-family: monaco, "andale mono", "lucida console", "courier new", monospace;
   }

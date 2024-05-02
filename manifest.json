@@ -1,11 +1,9 @@
 {
-  "version": "0.1.6",
+  "version": "0.1.7",
   "name": "ePub Reader",
   "manifest_version": 3,
   "offline_enabled": true,
-  "short_name": "epub-reader",
   "host_permissions": ["*://*/*"],
-  "permissions": ["storage", "contextMenus"],
   "homepage_url": "https://mybrowseraddon.com/epub-reader.html",
   "description": "View ePub documents right in your browser in a stand-alone popup window.",
   "commands": {
@@ -14,6 +12,10 @@
   "background": {
     "service_worker": "background.js"
   },
+  "permissions": [
+    "storage", 
+    "contextMenus"
+  ],
   "action": {
     "default_title": "ePub Reader",
     "default_icon": {

@@ -24,7 +24,9 @@ var background = {
           "method": id,
           "data": data,
           "path": "interface-to-background"
-        }); 
+        }, function () {
+          return chrome.runtime.lastError;
+        });
       }
     }
   },
@@ -42,7 +44,7 @@ var background = {
   },
   "listener": function (e) {
     if (e) {
-      for (var id in background.message) {
+      for (let id in background.message) {
         if (background.message[id]) {
           if ((typeof background.message[id]) === "function") {
             if (e.path === "background-to-interface") {
@@ -63,6 +65,9 @@ var config = {
   "timeout": {},
   "result": null,
   "relocated": false,
+  "reload": function () {
+    document.location.reload();
+  },
   "keyup": function (e) {
     if ((e.keyCode || e.which) === 37) config.action.left();
     if ((e.keyCode || e.which) === 39) config.action.right();
@@ -94,7 +99,7 @@ var config = {
       if (config.port.name === "win") {
         if (config.resize.timeout) window.clearTimeout(config.resize.timeout);
         config.resize.timeout = window.setTimeout(async function () {
-          var current = await chrome.windows.getCurrent();
+          const current = await chrome.windows.getCurrent();
           /*  */
           config.storage.write("interface.size", {
             "top": current.top,
@@ -111,7 +116,7 @@ var config = {
       document.documentElement.setAttribute("color", config.reader.theme.color);
       /*  */
       if (config.rendition) {
-        var width = config.reader.container.width;
+        const width = config.reader.container.width;
         /*  */
         config.rendition.themes.font(config.reader.font.family);
         config.rendition.themes.select(config.reader.theme.color);
@@ -131,7 +136,7 @@ var config = {
   "handle": {
     "settings": {
       "click": function (e) {
-        var iframe = config.renderer.querySelector("iframe");
+        const iframe = config.renderer.querySelector("iframe");
         /*  */
         switch (e.target.className) {
           case "serif": config.reader.font.family = "serif"; break;
@@ -165,7 +170,7 @@ var config = {
     "write": function (id, data) {
       if (id) {
         if (data !== '' && data !== null && data !== undefined) {
-          var tmp = {};
+          let tmp = {};
           tmp[id] = data;
           config.storage.local[id] = data;
           chrome.storage.local.set(tmp, function () {});
@@ -180,7 +185,7 @@ var config = {
     "name": '',
     "connect": function () {
       config.port.name = "webapp";
-      var context = document.documentElement.getAttribute("context");
+      const context = document.documentElement.getAttribute("context");
       /*  */
       if (chrome.runtime) {
         if (chrome.runtime.connect) {
@@ -221,7 +226,7 @@ var config = {
       config.xhr.onload = function () {config.render(this.response)};
       config.xhr.onerror = function () {config.info.textContent = "An error has occurred! please try again."};
       config.xhr.onprogress = function (e) {
-        var percent = e.total ? Math.floor((e.loaded / e.total) * 100) : '?';
+        const percent = e.total ? Math.floor((e.loaded / e.total) * 100) : '?';
         config.info.textContent = "Fetching document " + percent + "% please wait...";
       };
       /*  */
@@ -251,7 +256,7 @@ var config = {
       document.querySelector(".toolbar").setAttribute("toggle", config.reader.toggle);
       document.querySelector(".container").setAttribute("state", config.reader.toggle);
       /*  */
-      var mobileview = document.querySelector("link[href='resources/mobileview.css']");
+      let mobileview = document.querySelector("link[href='resources/mobileview.css']");
       if (!mobileview) {
         mobileview = document.createElement("link");
         mobileview.setAttribute("rel", "stylesheet");
@@ -265,7 +270,7 @@ var config = {
   "action": {
     "slide": function (e) {
       if (config.book) {
-        var cfi = config.book.locations.cfiFromPercentage(e.target.value / 100);
+        const cfi = config.book.locations.cfiFromPercentage(e.target.value / 100);
         if (cfi) {
           config.rendition.display(cfi);
         }
@@ -274,7 +279,7 @@ var config = {
     "left": async function (e) {
       if (config.book) {
         if (config.book.package && config.book.package.metadata) {
-          var rtl = config.book.package.metadata.direction === "rtl";
+          const rtl = config.book.package.metadata.direction === "rtl";
           document.getElementById(rtl ? "next" : "prev").style.opacity = 1;
           rtl ? await config.rendition.next() : await config.rendition.prev();
           /*  */
@@ -285,7 +290,7 @@ var config = {
     "right": async function (e) {
       if (config.book) {
         if (config.book.package && config.book.package.metadata) {
-          var rtl = config.book.package.metadata.direction === "rtl";
+          const rtl = config.book.package.metadata.direction === "rtl";
           document.getElementById(rtl ? "prev" : "next").style.opacity = 1;
           rtl ? await config.rendition.prev() : await config.rendition.next();
           /*  */
@@ -365,10 +370,7 @@ var config = {
 
 
 config.port.connect();
-
-background.receive("reload", function () {
-  document.location.reload();
-});
+background.receive("reload", config.reload);
 
 window.addEventListener("load", config.load, false);
 document.addEventListener("keyup", config.keyup, false);
