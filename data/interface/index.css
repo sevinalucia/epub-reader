@@ -173,6 +173,14 @@ html[context="webapp"] .donation {
   display: none;
 }
 
+html[context="webapp"] #ebook[empty] {
+	height: 78px;
+	max-width: 600px;
+	background: unset;
+	padding-left: unset;
+	background-size: unset;
+}
+
 @-moz-document url-prefix() {
   #toggle {
     font-size: 12px;
