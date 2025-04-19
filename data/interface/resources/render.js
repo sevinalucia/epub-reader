@@ -3,17 +3,17 @@ config.render = function (result) {
   if (result !== undefined) config.result = result;
   /*  */
   if (config.result) {
-    var height  = {};
-    var footer = document.querySelector(".footer");
-    var content = document.querySelector(".content");
-    var toolbar = document.querySelector(".toolbar");
-    var container = document.querySelector(".container");
+    const height  = {};
+    const footer = document.querySelector(".footer");
+    const content = document.querySelector(".content");
+    const toolbar = document.querySelector(".toolbar");
+    const container = document.querySelector(".container");
     /*  */
     height.f = window.getComputedStyle(footer).height;
     height.t = window.getComputedStyle(toolbar).height;
     height.c = window.getComputedStyle(container).height;
     /*  */
-    var options = config.reader.rendition.option[config.reader.method];
+    const options = config.reader.rendition.option[config.reader.method];
     if (options) {
       content.style.opacity = "0.0";
       config.info.textContent = "Loading document, please wait...";
@@ -41,18 +41,20 @@ config.render = function (result) {
         config.book.loaded.navigation.then(function (e) {
           config.reader.elements.chapters = document.createElement("select");
           /*  */
-          e.toc.forEach(function (chapter, index) {
-            var option = document.createElement("option");
-            option.textContent = index ? index + " - " + chapter.label : chapter.label;
-            option.setAttribute("chapter", chapter.href);
+          e.toc.forEach(function (toc, index) {
+            const option = document.createElement("option");
+            option.textContent = index ? index + " - " + toc.label : toc.label;
+            option.setAttribute("chapter", toc.href);
             config.reader.elements.chapters.appendChild(option);
           });
           /*  */
           config.reader.elements.chapters.addEventListener("change", function (e) {
-            var index = e.target.selectedIndex;
-            var chapter = e.target[index].getAttribute("chapter");
+            const index = e.target.selectedIndex;
+            const chapter = e.target[index].getAttribute("chapter");
             if (chapter) {
-              config.rendition.display(chapter).then(function () {});
+              config.rendition.display(chapter).then(function (e) {
+                //console.error(e);
+              });
             }
           });
           /*  */
@@ -65,13 +67,13 @@ config.render = function (result) {
         });
         /*  */
         config.book.ready.then(function () {
-          var current = config.book.key();
-          var key = config.reader.stored.location.key;
-          var cfi = config.reader.stored.location.cfi;
-          var metadata = config.book.package.metadata;
-          var valid = {"cfi": null, "locations": null};
-          var locations = config.reader.stored.location.object;
-          var slider = document.querySelector("#slider input");
+          const current = config.book.key();
+          const key = config.reader.stored.location.key;
+          const cfi = config.reader.stored.location.cfi;
+          const metadata = config.book.package.metadata;
+          const valid = {"cfi": null, "locations": null};
+          const locations = config.reader.stored.location.object;
+          const slider = document.querySelector("#slider input");
           /*  */
           config.loading.textContent = "Loading book data...";
           valid.cfi = cfi && key === current ? cfi : config.book.navigation.toc[0].href;
@@ -79,7 +81,7 @@ config.render = function (result) {
           document.title = document.title + " :: " + metadata.title + (metadata.language ? " (" + metadata.language + ")" : '');
           /*  */
           config.rendition.display(valid.cfi).then(function () {
-            var element = config.renderer.firstChild;
+            const element = config.renderer.firstChild;
             if (element) {
               if (config.renderer.firstChild.style) {
                 content.style.opacity = "1.0";
@@ -87,9 +89,9 @@ config.render = function (result) {
                 toolbar.setAttribute("render", '');
                 container.setAttribute("render", '');
                 /*  */
-                var state = container.getAttribute("state");
-                var render = container.getAttribute("render") !== null;
-                var mobileview = parseInt(window.getComputedStyle(document.documentElement).width) < 600;
+                const state = container.getAttribute("state");
+                const render = container.getAttribute("render") !== null;
+                const mobileview = parseInt(window.getComputedStyle(document.documentElement).width) < 600;
                 /*  */
                 height.r = "calc(100vh" + " - " + height.t + " - " + height.f + " - " + (state === "hide" ? (mobileview ? "64px" : "19px") : (render ? "23px" : "9px")) + ')';
                 /*  */
@@ -108,10 +110,10 @@ config.render = function (result) {
           config.rendition.on("relocated", function (location) {
             if (config.relocated === false) config.style.update(true);
             /*  */
-            var a = "Chapter #" + (location.start.index + 1) + (config.book.locations.spine ? '/' + config.book.locations.spine.length : '');
-            var b = " - " + location.start.displayed.page + '/' + location.start.displayed.total;
-            var c = config.book.locations ? " :: " + (location.start.location > -1 ? location.start.location + '/' : '') + config.book.locations.total : '';
-            var d = Math.floor(location.start.percentage * 100) + '%';
+            const a = "Chapter #" + (location.start.index + 1) + (config.book.locations.spine ? '/' + config.book.locations.spine.length : '');
+            const b = " - " + location.start.displayed.page + '/' + location.start.displayed.total;
+            const c = config.book.locations ? " :: " + (location.start.location > -1 ? location.start.location + '/' : '') + config.book.locations.total : '';
+            const d = Math.floor(location.start.percentage * 100) + '%';
             /*  */
             config.status.textContent = a + b + c + ', ' + d;
             config.reader.stored.location.cfi = location.start.cfi;
@@ -128,7 +130,7 @@ config.render = function (result) {
             if (window.Touch) {
               const target = e.document.documentElement;
               if (target) {
-                var start = window.Touch, end = window.Touch;
+                let start = window.Touch, end = window.Touch;
                 target.addEventListener("touchstart", function (e) {start = e.changedTouches[0]});
                 target.addEventListener("touchend", function (e) {
                   end = e.changedTouches[0];

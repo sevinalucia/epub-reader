@@ -133,29 +133,6 @@ var config = {
       }
     }
   },
-  "handle": {
-    "settings": {
-      "click": function (e) {
-        const iframe = config.renderer.querySelector("iframe");
-        /*  */
-        switch (e.target.className) {
-          case "serif": config.reader.font.family = "serif"; break;
-          case "print": if (iframe) iframe.contentWindow.print(); break;
-          case "sans-serif": config.reader.font.family = "sans-serif"; break;
-          case "decrease-size": config.reader.font.size = config.reader.font.size > 50 ? config.reader.font.size - 1 : 50; break;
-          case "increase-size": config.reader.font.size = config.reader.font.size < 300 ? config.reader.font.size + 1 : 300; break;
-          case "decrease-width": config.reader.container.width = config.reader.container.width > 30 ? config.reader.container.width - 1 : 30; break;
-          case "increase-width": config.reader.container.width = config.reader.container.width < 100 ? config.reader.container.width + 1 : 100; break;
-          case "decrease-height": config.reader.container.line.height = config.reader.container.line.height > 1 ? config.reader.container.line.height - 0.05 : 1; break;
-          case "increase-height": config.reader.container.line.height = config.reader.container.line.height < 10 ? config.reader.container.line.height + 0.05 : 10; break;
-          default: break;
-        }
-        /*  */
-        config.reader.container.line.height = Number(config.reader.container.line.height.toFixed(2));
-        config.style.update(true);
-      }
-    }
-  },
   "storage": {
     "local": {},
     "read": function (id) {
@@ -311,6 +288,77 @@ var config = {
       config.renderer.textContent = "Please enter a book URL or drag & drop an ebook file above (top-right corner)";
     }
   },
+  "handle": {
+    "settings": {
+      "click": function (e) {
+        switch (e.target.className) {
+          case "print": config.handle.settings.print(); break;
+          case "serif": config.reader.font.family = "serif"; break;
+          case "sans-serif": config.reader.font.family = "sans-serif"; break;
+          case "decrease-size": config.reader.font.size = config.reader.font.size > 50 ? config.reader.font.size - 1 : 50; break;
+          case "increase-size": config.reader.font.size = config.reader.font.size < 300 ? config.reader.font.size + 1 : 300; break;
+          case "decrease-width": config.reader.container.width = config.reader.container.width > 30 ? config.reader.container.width - 1 : 30; break;
+          case "increase-width": config.reader.container.width = config.reader.container.width < 100 ? config.reader.container.width + 1 : 100; break;
+          case "decrease-height": config.reader.container.line.height = config.reader.container.line.height > 1 ? config.reader.container.line.height - 0.05 : 1; break;
+          case "increase-height": config.reader.container.line.height = config.reader.container.line.height < 10 ? config.reader.container.line.height + 0.05 : 10; break;
+          default: break;
+        }
+        /*  */
+        config.reader.container.line.height = Number(config.reader.container.line.height.toFixed(2));
+        config.style.update(true);
+      },
+      "print": async function () {
+        const book = config.reader.engine();
+        const current = config.loading.textContent;
+        const extra = document.querySelector(".extra");
+        const result = document.getElementById("result");
+        const preview = document.getElementById("preview");
+        const options = {"width": "100%", "height": "100%", "flow": "scrolled-doc", "fullsize": true};
+        /*  */
+        try {
+          await new Promise(resolve => window.setTimeout(resolve, 300));
+          /*  */
+          config.loading.textContent = "Preparing for print, please wait...";
+          extra.setAttribute("state", "show");
+          /*  */
+          await new Promise(resolve => window.setTimeout(resolve, 300));
+          book.open(config.result);
+          const rendition = book.renderTo("preview", options);
+          /*  */
+          await book.ready;
+          const tocs = await book.loaded.navigation;
+          await new Promise(resolve => window.setTimeout(resolve, 300));
+          /*  */
+          result.textContent = '';
+          for (let i = 0; i < tocs.toc.length; i++) {
+            const toc = tocs.toc[i];
+            await rendition.display(toc.href);
+            const target = preview.querySelector(".epub-view");
+            const tmp = target.cloneNode(true);
+            /*  */
+            config.loading.textContent = "Preparing to print item #" + i + "/" + tocs.toc.length + ", please wait...";
+            tmp.setAttribute("label", toc.label);
+            tmp.setAttribute("href", toc.href);
+            result.appendChild(tmp);
+          }
+          /*  */
+          config.loading.textContent = current;
+          await new Promise(resolve => window.setTimeout(resolve, 300));
+          /*  */
+          window.print();
+          book.destroy();
+          result.textContent = '';
+          preview.textContent = '';
+          extra.setAttribute("state", "hide");
+        } catch (e) {
+          book.destroy();
+          result.textContent = '';
+          preview.textContent = '';
+          extra.setAttribute("state", "hide");
+        }
+      }
+    }
+  },
   "reader": {
     "pages": [],
     "chars": 1024,
@@ -356,13 +404,13 @@ var config = {
     "rendition": {
       "option": {
         "archived": {"width": "100%", "height": "100%"},
-        "scrolled": {"width": "100%", "flow": "scrolled-doc"},
         "spreads": {"width": "100%", "height": "100%", "spread": "always"},
+        "scrolled": {"width": "100%", "flow": "scrolled-doc", "fullsize": true},
         "hypothes": {"width": "100%", "height": "100%", "flow": "scrolled-doc", "ignoreClass": "annotator-hl"},
         "spreads-continuous": {"width": "100%", "height": "100%", "flow": "paginated", "manager": "continuous"},
         "scrolled-continuous": {"width": "100%", "height": "100%", "flow": "scrolled", "manager": "continuous"},
         "swipe": {"width": "100%", "height": "100%", "flow": "paginated", "manager": "continuous", "snap": true},
-        "highlights": {"width": "100%", "height": "100%", "manager": "continuous", "ignoreClass": "annotator-hl"},
+        "highlights": {"width": "100%", "height": "100%", "manager": "continuous", "ignoreClass": "annotator-hl"}
       }
     }
   }
@@ -372,8 +420,9 @@ var config = {
 config.port.connect();
 background.receive("reload", config.reload);
 
-window.addEventListener("load", config.load, false);
 document.addEventListener("keyup", config.keyup, false);
 document.addEventListener("drop", config.prevent.drop, true);
-window.addEventListener("resize", config.resize.method, false);
 document.addEventListener("dragover", config.prevent.drop, true);
+
+window.addEventListener("load", config.load, false);
+window.addEventListener("resize", config.resize.method, false);

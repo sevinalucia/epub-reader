@@ -12,8 +12,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <div id="prev"><div>‹</div></div>
-    <div id="next"><div>›</div></div>
+    <div id="prev">
+      <div>‹</div>
+    </div>
+    <div id="next">
+      <div>›</div>
+    </div>
     <div id="toggle" title="Toggle toolbar view (show | hide)"></div>
     <div class="content">
       <div class="toolbar">
@@ -89,7 +93,7 @@
             <div class="sidebar">
               <table>
                 <tr>
-                  <td class="print" title="Print this document">
+                  <td class="print" title="Print the complete document">
                     <svg width="12" height="12" viewBox="0 0 122.8799 122.8799">
                       <path d="M 20.088461,7.796912 C 20.115373,17.021043 20.088461,22.426355 20.088461,31.855404 H 1.3632812 V 72.542113 93.182435 H 8.5107284 16.868272 V 83.966309 H 10.579408 V 69.439095 H 112.60728 V 83.966309 H 106.34266 V 93.182435 H 121.84766 V 83.966309 H 121.82342 V 63.57649 31.855404 C 121.69342,31.83149 121.58213,31.806716 121.45372,31.782677 V 31.855404 H 102.72854 V 7.796912 Z M 20.19553,76.671389 V 115.21871 H 103.0942 V 76.671389 Z"/>
                     </svg>
@@ -114,11 +118,16 @@
             </div>
             <div class="file">
               <input type="file" id="fileio" title="Select an ebook"></input>
-              <svg width="15" height="15" viewBox="0 0 122.8799 122.8799">
+              <svg width="18" height="18" viewBox="0 0 122.8799 122.8799">
                 <path d="M 4.9160156 0.27148438 L 4.9160156 4.9433594 L 0.24414062 4.9433594 L 0.24414062 7.0605469 L 4.9160156 7.0605469 L 4.9160156 11.732422 L 7.0332031 11.732422 L 7.0332031 7.0605469 L 11.707031 7.0605469 L 11.707031 4.9433594 L 7.0332031 4.9433594 L 7.0332031 0.27148438 L 4.9160156 0.27148438 z" transform="scale(10.239992)"/>
               </svg>
             </div>
             <div class="select">
+              <div id="current" title="Print the current chapter">
+                <svg width="12" height="12" viewBox="0 0 122.8799 122.8799">
+                  <path d="M 20.088461,7.796912 C 20.115373,17.021043 20.088461,22.426355 20.088461,31.855404 H 1.3632812 V 72.542113 93.182435 H 8.5107284 16.868272 V 83.966309 H 10.579408 V 69.439095 H 112.60728 V 83.966309 H 106.34266 V 93.182435 H 121.84766 V 83.966309 H 121.82342 V 63.57649 31.855404 C 121.69342,31.83149 121.58213,31.806716 121.45372,31.782677 V 31.855404 H 102.72854 V 7.796912 Z M 20.19553,76.671389 V 115.21871 H 103.0942 V 76.671389 Z"/>
+                </svg>
+              </div>
               <select id="methods" title="Book view">
                 <option value="swipe">Swipe style</option>
                 <option value="spreads">Spreads style</option>
@@ -156,6 +165,10 @@
           <div id="loading">Loading...</div>
         </div>
       </div>
+    </div>
+    <div class="extra" state="hide">
+      <div id="preview"></div>
+      <div id="result"></div>
     </div>
   	<script type="text/javascript" src="vendor/jszip.js"></script>
   	<script type="text/javascript" src="vendor/epub.js"></script>

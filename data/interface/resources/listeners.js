@@ -1,31 +1,32 @@
 config.app.listeners = {
   "add": function () {
-    var url = document.getElementById("url");
-    var next = document.getElementById("next");
-    var prev = document.getElementById("prev");
-    var fileio = document.getElementById("fileio");
-    var toggle = document.getElementById("toggle");
-    var methods = document.getElementById("methods");
+    const url = document.getElementById("url");
+    const next = document.getElementById("next");
+    const prev = document.getElementById("prev");
+    const fileio = document.getElementById("fileio");
+    const toggle = document.getElementById("toggle");
+    const methods = document.getElementById("methods");
+    const current = document.getElementById("current");
     /*  */
-    var slider = document.querySelector("#slider input");
+    const slider = document.querySelector("#slider input");
     /*  */
-    var print = document.querySelector(".sidebar table .print");
-    var reload = document.querySelector(".sidebar table .reload");
-    var support = document.querySelector(".sidebar table .support");
-    var donation = document.querySelector(".sidebar table .donation");
+    const print = document.querySelector(".sidebar table .print");
+    const reload = document.querySelector(".sidebar table .reload");
+    const support = document.querySelector(".sidebar table .support");
+    const donation = document.querySelector(".sidebar table .donation");
     /*  */
-    var settings = document.querySelector(".toolbar");
-    var dark = document.querySelector(".toolbar .dark");
-    var sepia = document.querySelector(".toolbar .sepia");
-    var light = document.querySelector(".toolbar .light");
-    var serif = document.querySelector(".toolbar .serif");
-    var sansserif = document.querySelector(".toolbar .sans-serif");
-    var increasesize = document.querySelector(".toolbar .increase-size");
-    var decreasesize = document.querySelector(".toolbar .decrease-size");
-    var increasewidth = document.querySelector(".toolbar .increase-width");
-    var decreasewidth = document.querySelector(".toolbar .decrease-width");
-    var increaseheight = document.querySelector(".toolbar .increase-height");
-    var decreaseheight = document.querySelector(".toolbar .decrease-height");
+    const settings = document.querySelector(".toolbar");
+    const dark = document.querySelector(".toolbar .dark");
+    const sepia = document.querySelector(".toolbar .sepia");
+    const light = document.querySelector(".toolbar .light");
+    const serif = document.querySelector(".toolbar .serif");
+    const sansserif = document.querySelector(".toolbar .sans-serif");
+    const increasesize = document.querySelector(".toolbar .increase-size");
+    const decreasesize = document.querySelector(".toolbar .decrease-size");
+    const increasewidth = document.querySelector(".toolbar .increase-width");
+    const decreasewidth = document.querySelector(".toolbar .decrease-width");
+    const increaseheight = document.querySelector(".toolbar .increase-height");
+    const decreaseheight = document.querySelector(".toolbar .decrease-height");
     /*  */
     print.addEventListener("click", config.handle.settings.click);
     serif.addEventListener("click", config.handle.settings.click);
@@ -46,12 +47,12 @@ config.app.listeners = {
     slider.addEventListener("mousedown", function () {config.reader.slider.mouse.down = true}, false);
     /*  */
     support.addEventListener("click", function () {
-      var url = config.addon.homepage();
+      const url = config.addon.homepage();
       chrome.tabs.create({"url": url, "active": true});
     }, false);
     /*  */
     donation.addEventListener("click", function () {
-      var url = config.addon.homepage() + "?reason=support";
+      const url = config.addon.homepage() + "?reason=support";
       chrome.tabs.create({"url": url, "active": true});
     }, false);
     /*  */
@@ -81,9 +82,18 @@ config.app.listeners = {
     });
     /*  */
     settings.addEventListener("keydown", function (e) {
-      var up = e.key === "ArrowUp" && e.target.className.indexOf("increase") !== -1;
-      var down = e.key === "ArrowDown" && e.target.className.indexOf("decrease") !== -1;
+      const up = e.key === "ArrowUp" && e.target.className.indexOf("increase") !== -1;
+      const down = e.key === "ArrowDown" && e.target.className.indexOf("decrease") !== -1;
       if (up || down) config.handle.settings.click(e);
+    }, false);
+    /*  */
+    current.addEventListener("click", function () {
+      if (config.renderer) {
+        const iframe = config.renderer.querySelector("iframe");
+        if (iframe) {
+          iframe.contentWindow.print();
+        }
+      }
     }, false);
     /*  */
     url.addEventListener("change", function (e) {
@@ -99,11 +109,11 @@ config.app.listeners = {
     fileio.addEventListener("change", function (e) {
       if (e.target) {
         if (e.target.files) {
-          var file = e.target.files[0];
+          const file = e.target.files[0];
           if (file) {
-            var ext = file.name.indexOf(config.reader.ext) !== -1;
+            const ext = file.name.indexOf(config.reader.ext) !== -1;
             if (ext) {
-              var reader = new FileReader();
+              const reader = new FileReader();
               reader.readAsArrayBuffer(file);
               reader.onload = function () {
                 config.url = '';
@@ -111,9 +121,14 @@ config.app.listeners = {
                 config.render(this.result);
                 config.reader.url = config.url;
               };
+              /*  */
               config.info.textContent = "Loading document, please wait...";
-            } else config.info.textContent = "Invalid ebook file! please try again.";
-          } else config.info.textContent = "No file selected! please try again.";
+            } else {
+              config.info.textContent = "Invalid ebook file! please try again.";
+            }
+          } else {
+            config.info.textContent = "No file selected! please try again.";
+          }
         }
       }
     });

@@ -1,18 +1,25 @@
-html[color="dark"] {background-color: #333 !important}
-html[color="light"] {background-color: #FFF !important}
-html[color="sepia"] {background-color: #f4ecd8 !important}
+html[color="dark"] .content {color-scheme: dark}
 
-html[color="dark"] .toolbar {background-color: #333 !important}
-html[color="light"] .toolbar {background-color: #FFF !important}
+html[color="dark"] .content {background-color: #333333 !important}
+html[color="light"] .content {background-color: #ffffff !important}
+html[color="sepia"] .content {background-color: #f4ecd8 !important}
+
+html[color="dark"] .toolbar {background-color: #333333 !important}
+html[color="light"] .toolbar {background-color: #ffffff !important}
 html[color="sepia"] .toolbar {background-color: #f4ecd8 !important}
 
-html[color="dark"] .sidebar {background-color: #333 !important}
-html[color="light"] .sidebar {background-color: #FFF !important}
+html[color="dark"] .sidebar {background-color: #333333 !important}
+html[color="light"] .sidebar {background-color: #ffffff !important}
 html[color="sepia"] .sidebar {background-color: #f4ecd8 !important}
 
-html[color="dark"] #toggle {background-color: #333 !important}
-html[color="light"] #toggle {background-color: #FFF !important}
+html[color="dark"] #toggle {background-color: #333333 !important}
+html[color="light"] #toggle {background-color: #ffffff !important}
 html[color="sepia"] #toggle {background-color: #f4ecd8 !important}
+
+html[color] #toggle {transition: 300ms ease background-color}
+html[color] #toggle:hover {background-color: rgb(0 0 0 / 5%) !important}
+
+html[color="dark"] #toggle {color: #c5c5c5}
 
 html[color="dark"] .toolbar .grid * {
 	fill: #e4e4e4 !important;
@@ -32,6 +39,7 @@ html[color="dark"] #ebook[empty],
 html[color="dark"] .footer > div,
 html[color="dark"] .sidebar table tr td,
 html[color="dark"] .toolbar .grid > div,
+html[color="dark"] .toolbar .grid #current,
 html[color="dark"] .toolbar .grid .subgrid,
 html[color="dark"] .toolbar .grid > div[last] .file,
 html[color="dark"] .toolbar .grid > div[last] .select,
@@ -39,6 +47,10 @@ html[color="dark"] .toolbar .grid > div[last] .sidebar,
 html[color="dark"] .toolbar .grid .subgrid > div[class] {
 	border-color: rgba(255,255,255,0.1) !important;
 }
+
+html[color="dark"] .footer > div {color: #ffffff}
+html[color="light"] .footer > div {color: #333333}
+html[color="sepia"] .footer > div {color: #333333}
 
 html[color="dark"] .footer > div input,
 html[color="dark"] #ebook[empty] {
