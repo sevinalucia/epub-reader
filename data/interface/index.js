@@ -333,7 +333,7 @@ var config = {
           for (let i = 0; i < tocs.toc.length; i++) {
             const toc = tocs.toc[i];
             await rendition.display(toc.href);
-            const target = preview.querySelector(".epub-view");
+            const target = preview.querySelector(".epub-container");
             const tmp = target.cloneNode(true);
             /*  */
             config.loading.textContent = "Preparing to print item #" + i + "/" + tocs.toc.length + ", please wait...";
@@ -346,10 +346,10 @@ var config = {
           await new Promise(resolve => window.setTimeout(resolve, 300));
           /*  */
           window.print();
-          book.destroy();
-          result.textContent = '';
-          preview.textContent = '';
-          extra.setAttribute("state", "hide");
+          //book.destroy();
+          //result.textContent = '';
+          //preview.textContent = '';
+          //extra.setAttribute("state", "hide");
         } catch (e) {
           book.destroy();
           result.textContent = '';

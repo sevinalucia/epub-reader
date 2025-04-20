@@ -58,11 +58,3 @@
 		height: calc(100% - 3px);
 	}
 }
-
-@-moz-document url-prefix() {
-  #toggle[state="hide"] {
-    font-size: 12px;
-    font-weight: normal;
-    font-family: monaco, "andale mono", "lucida console", "courier new", monospace;
-  }
-}

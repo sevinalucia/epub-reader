@@ -247,15 +247,3 @@
   text-indent: 5px;
 	font-weight: 600;
 }
-
-@-moz-document url-prefix() {
-	.toolbar .grid select,
-  .toolbar .grid > div > div,
-	.toolbar .grid select option,
-	.toolbar .grid div[one] input,
-	.toolbar .grid > div[last] input[type='file'] {
-    font-size: 12px;
-    font-weight: normal;
-    font-family: monaco, "andale mono", "lucida console", "courier new", monospace;
-  }
-}

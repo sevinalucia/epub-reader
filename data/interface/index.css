@@ -184,13 +184,6 @@ div[method="hypothes"], div[method="scrolled"] {
 	display: none;
 }
 
-.extra #result,
-.extra #preview,
-.extra #preview .epub-container {
-	width: 100% !important;
-	height: 100% !important;
-}
-
 html[context="webapp"] .support,
 html[context="webapp"] .donation {
   display: none;
@@ -202,6 +195,12 @@ html[context="webapp"] #ebook[empty] {
 	background: unset;
 	padding-left: unset;
 	background-size: unset;
+}
+
+@-moz-document url-prefix() {
+	.extra .epub-container .epub-view {
+		border: solid 1px transparent !important;
+	}	
 }
 
 @media print {

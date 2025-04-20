@@ -70,11 +70,3 @@
 #loading {
 	text-align: right;
 }
-
-@-moz-document url-prefix() {
-  #status, #loading {
-    font-size: 12px;
-    font-weight: normal;
-    font-family: monaco, "andale mono", "lucida console", "courier new", monospace;
-  }
-}
